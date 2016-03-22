@@ -1,0 +1,8 @@
+//
+// Created by Demon on 23/03/16.
+//
+
+#ifndef ADAPTIVE_HUFFMAN_ENCODER_H
+#define ADAPTIVE_HUFFMAN_ENCODER_H
+
+#endif //ADAPTIVE_HUFFMAN_ENCODER_H
