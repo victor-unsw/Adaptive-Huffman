@@ -6,6 +6,5 @@
 #include "model.h"
 
 
-void testFunction(){
-    std::cout << "in function and working";
-}
+
+
