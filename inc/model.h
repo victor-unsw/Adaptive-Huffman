@@ -5,6 +5,8 @@
 #ifndef ADAPTIVE_HUFFMAN_MODEL_H
 #define ADAPTIVE_HUFFMAN_MODEL_H
 
+#include <list>
+
 class HuffmanTree{
 
     class node;
@@ -96,6 +98,61 @@ class HuffmanTree{
         void incrementWeight();
 
     };
+
+    class block{
+    private:
+        std::list<node*> L;
+
+    public:
+        // ------------------------------------------------------------
+        // Constructor & Destructor
+        // ------------------------------------------------------------
+        block():L(){}
+
+        ~block(){
+            // remove references
+            if (!L.empty())
+                for (auto it=L.begin();it<L.end();it++)
+                    *it = NULL;
+        }
+
+        // ------------------------------------------------------------
+        // Block Utility Functions
+        // ------------------------------------------------------------
+
+        /*
+         * getBlockSize()
+         * - returns size of list L i.e. block
+         */
+        size_t size(){
+            return L.size();
+        }
+
+        /*
+         * isEmpty()
+         * - returns whether block is empty or not.
+         */
+        bool empty(){
+            return L.empty();
+        }
+
+
+        // ------------------------------------------------------------
+        // Block Core Functions
+        // ------------------------------------------------------------
+
+        /*
+         * push(..)
+         * - pushes the pt to node in front
+         * - fresh node in block is at front
+         * - leader node in block is at back
+         */
+        void push(node* n);
+
+    };
+
+
+public:
 
 
 };

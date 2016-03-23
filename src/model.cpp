@@ -14,7 +14,6 @@
 // ------------------------------------------------------------------------------
 // Node Accessibility functions
 
-
 /*
  * setParent(..)
  * - Sets the new parent as parameter 'p'
@@ -88,6 +87,21 @@ void HuffmanTree::node::incrementWeight(){
 
 
 // ==============================================================================
-//
+// HuffmanTree::block
 // ==============================================================================
+
+
+// ------------------------------------------------------------------------------
+// Block Core functions
+
+/*
+ * push(..)
+ * - pushes the pt to node in front
+ * - fresh node in block is at front
+ * - leader node in block is at back
+ */
+void HuffmanTree::block::push(node *n) {
+    L.push_front(n);
+}
+
 
