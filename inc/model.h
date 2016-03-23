@@ -43,44 +43,17 @@ class HuffmanTree{
         node* getParent(){
             return p;
         }
-        /*
-         * setParent(..)
-         * - sets new parent 'p'
-         * - returns previous parent
-         */
-        node* setParent(node* p){
-            node* previous = this->p;
-            this->p = p;
-            return previous;
-        }
+        node* setParent(node* p);
 
         node* getLeft(){
             return l;
         }
-        /*
-         * setLeft(..)
-         * - sets new left child
-         * - returns previous left child
-         */
-        node* setLeft(node* l){
-            node* previous = this->l;
-            this->l = l;
-            return previous;
-        }
+        node* setLeft(node* l);
 
         node* getRight(){
             return r;
         }
-        /*
-         * setRight(..)
-         * - sets new right child 'r'
-         * - returns previous right child
-         */
-        node* setRight(node* r){
-            node* previous = this->r;
-            this->r = r;
-            return previous;
-        }
+        node* setRight(node* r);
 
         // ------------------------------------------------------------
         // Node State Functions
@@ -99,20 +72,14 @@ class HuffmanTree{
         }
 
         /*
-         * Make node as 'internal node'.
+         * Converts current node into Internal Node.
          */
-        void makeInternal(){
-            is_internal = true;
-            NYT         = false;
-        }
+        void makeInternal();
 
         /*
-         * Make node as 'NYT node'.
+         * Converts current node into NYT Node.
          */
-        void makeNYT(){
-            is_internal = false;
-            NYT         = true;
-        }
+        void makeNYT();
 
         // ------------------------------------------------------------
         // Node Weight Functions
@@ -122,9 +89,11 @@ class HuffmanTree{
             return wt;
         }
 
-        void incrementWeight(){
-            wt++;
-        }
+        /*
+         * incrementWeight(..)
+         * - Increases the weight of current node by 1.
+         */
+        void incrementWeight();
 
     };
 
