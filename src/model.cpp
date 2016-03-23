@@ -114,3 +114,51 @@ void HuffmanTree::block::push(node *n) {
 }
 
 
+bool HuffmanTree::block::remove(node *n) {
+    std::list<node*>::iterator target = std::find(L.begin(),L.end(),n);
+    if (target != L.end()) {
+        L.erase(target);
+        return true;
+    }
+    return false;
+}
+
+
+
+
+// ==============================================================================
+// HuffmanTree
+// ==============================================================================
+
+HuffmanTree::node* HuffmanTree::insert(unsigned char c){
+    node* R = new node(NYT,NULL,NULL, false,c);
+    node* L = new node(NYT,NULL,NULL,true);
+    NYT->makeInternal();                                                // make it internal
+    NYT->setLeft(L);                                                    // set left child
+    NYT->setRight(R);                                                   // set right child
+    NYT = L;                                                            // new NYT is left child
+
+    // block management remaining
+
+    return R->getParent();
+}
+
+HuffmanTree::block* HuffmanTree::getNodeBlock(node *n) {
+    std::unordered_map<int,block*>::iterator it;
+    if (n->isLeaf()){
+        // search in leaf_block
+        it = leaf_block.find(n->getWeight());
+        return it == leaf_block.end() ? NULL : it->second;              // return NULL or value i.e. block*
+    } else if(n->isInternal()){
+        // search in internal_block
+        it = internal_block.find(n->getWeight());
+        return it == leaf_block.end() ? NULL : it->second;              // " "
+    }
+    return NULL;
+}
+
+HuffmanTree::block* HuffmanTree::addBlock(std::unordered_map<int,block*>& blocks,int wt){
+    block* temp = new block;
+    blocks[wt] = temp;
+    return temp;
+}

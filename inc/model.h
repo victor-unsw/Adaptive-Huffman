@@ -7,6 +7,7 @@
 
 #include <list>
 #include <unordered_map>
+#include <algorithm>
 
 class HuffmanTree{
 
@@ -115,14 +116,16 @@ class HuffmanTree{
         // ------------------------------------------------------------
         // Constructor & Destructor
         // ------------------------------------------------------------
+
         block():L(){}
 
         ~block(){
             // remove references
             if (!L.empty())
-                for (auto it=L.begin();it<L.end();it++)
+                for (auto it=L.begin(); it!=L.end() ;it++)
                     *it = NULL;
         }
+
 
         // ------------------------------------------------------------
         // Block Utility Functions
@@ -157,6 +160,14 @@ class HuffmanTree{
          */
         void push(node* n);
 
+        /*
+         * remove(..)
+         * - removes node n pointer from list
+         * - returns true if such node pointer existed
+         */
+        bool remove(node* n);
+
+
     };
 
 
@@ -177,6 +188,33 @@ class HuffmanTree{
     // CORE Functions
     // ------------------------------------------------------------
 
+    /*
+     * insert(..)
+     * - inserts new node at NYT node.
+     *
+     * Memory Allocation    :   Right Node
+     *                          Left Node
+     *
+     * Memory Deallocation  :   None
+     *
+     * Returns : internal node created instead of NYT
+     */
+    node* insert(unsigned char c);
+
+    /*
+     * getNodeBlock(..)
+     * - returns block of given node from either
+     *   internal_block / leaf_block as per config.
+     */
+    block* getNodeBlock(node* n);
+
+    /*
+     * addBlock(..)
+     * - adds a new block at given [wt] in the map.
+     */
+    block* addBlock(std::unordered_map<int,block*>& blocks,int wt);
+
+    bool isNodeInBlock(node* n);
 
 public:
 
@@ -186,6 +224,7 @@ public:
         ROOT    = new node(NULL,NULL,NULL, true);
         NYT     = ROOT;
     }
+
 
 
 };
