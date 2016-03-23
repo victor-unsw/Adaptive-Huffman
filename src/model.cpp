@@ -47,6 +47,13 @@ HuffmanTree::node* HuffmanTree::node::setRight(HuffmanTree::node* r){
     return previous;
 }
 
+/*
+ * setCode(..)
+ * - sets the code of leaf node as parameter 'c'.
+ */
+void HuffmanTree::node::setCode(unsigned char c) {
+    this->code = c;
+}
 
 
 // ------------------------------------------------------------------------------
@@ -58,6 +65,7 @@ HuffmanTree::node* HuffmanTree::node::setRight(HuffmanTree::node* r){
 void HuffmanTree::node::makeInternal(){
     is_internal = true;
     NYT         = false;
+    code        = 0;
 }
 
 /*
@@ -66,6 +74,7 @@ void HuffmanTree::node::makeInternal(){
 void HuffmanTree::node::makeNYT(){
     is_internal = false;
     NYT         = true;
+    code        = 0;
 }
 
 
