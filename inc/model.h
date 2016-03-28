@@ -285,6 +285,11 @@ class HuffmanTree{
     /*
      * addBlock(..)
      * - adds a new block at given [wt] in the map.
+     *
+     * Memory Allocated     : temp (new block)
+     * Memory Deallocated   : none
+     *
+     * return : new block
      */
     block* addBlock(std::unordered_map<int,block*>& blocks,int wt);
 
@@ -294,6 +299,15 @@ class HuffmanTree{
      *   or adds a new block and returns it
      */
     block* getOrAddBlock(std::unordered_map<int,block*>& blocks,int wt);
+
+    /*
+     * CheckNYT()
+     * - checks whether the node pointed by
+     *   NYT variable is actually an NYT node.
+     */
+    bool checkNYT(){
+        return NYT->isNYT();
+    }
 
 
 public:
@@ -307,48 +321,7 @@ public:
     }
 
 
-    void testSlide(){
-        node a(0,0,0,false,'a');
-        node b(0,0,0,false,'b');
-        node c(0,0,0,false,'c');
-        node d(0,0,0,false,'d');
-        node e(0,0,0,false,'e');
-        node f(0,0,0,false,'f');
-        node g(0,0,0,false,'g');
-        node h(0,0,0,false,'h');
-        node i(0,0,0,false,'i');
-        node j(0,0,0,false,'j');
-        std::cout << "here " << std::endl;
 
-
-        a.setLeft(&b);  b.setParent(&a);
-        c.setRight(&d); d.setParent(&c);
-        e.setRight(&f); f.setParent(&e);
-        g.setLeft(&h);  h.setParent(&g);
-        i.setLeft(&j);  j.setParent(&i);
-
-        d.incrementWeight();
-        f.incrementWeight();
-        h.incrementWeight();
-        j.incrementWeight();
-
-        addNodeToBlock(&d);
-        addNodeToBlock(&f);
-        addNodeToBlock(&h);
-        addNodeToBlock(&j);
-
-        block* current_block = getNodeBlock(&d);
-
-        std::cout << "before slide : " << std::endl;
-        b.showNode();
-        current_block->showBlockNodes();
-
-        slide(&b,current_block);
-
-        std::cout << "\n\nafter slide : " << std::endl;
-        b.showNode();
-        current_block->showBlockNodes();
-    }
 
 };
 

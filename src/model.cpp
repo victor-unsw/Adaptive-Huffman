@@ -150,6 +150,9 @@ std::list<HuffmanTree::node*>& HuffmanTree::block::getList(){
 // HuffmanTree
 // ==============================================================================
 
+// ------------------------------------------------------------------------------
+// Core functions
+
 /*
  * insert(node n) :-
  * - create left child (as NYT node)
@@ -186,6 +189,76 @@ HuffmanTree::node* HuffmanTree::insert(unsigned char c){
     return P;
 }
 
+/*
+ * slide(n,b)
+ * - slides n node through b block
+ *   by swapping n with each node in
+ *   b block.
+ */
+void HuffmanTree::slide(node* n1,block* b){
+    if (n1 == NULL || b == NULL)
+        return;
+    std::list<node*> L = b->getList();
+    for (auto it=L.begin();it!=L.end();it++)
+        swap(n1,*it);
+}
+
+/*
+ * swap(n1,n2).
+ * - swaps n1 with n2
+ * - fixes parent child relationship
+ *
+ * - doesn't work while swapping parent with its child
+ */
+void HuffmanTree::swap(node* n1,node* n2){
+    // can't swap parent with child
+    if (n1->getParent() == n2 || n2->getParent() == n1)
+        return;
+
+    node temp;                                  // local variable; memory deallocated automatically
+    replace(&temp,n2);
+    replace(n2,n1);
+    replace(n1,&temp);
+}
+
+
+
+
+// ------------------------------------------------------------------------------
+// Block Management functions
+
+/*
+ * addNodeToBlock(..)
+ * - adds node to the block
+ *   as per the configuration
+ *   of the node.
+ */
+void HuffmanTree::addNodeToBlock(node* n){
+    block* temp = n->isInternal() ? getOrAddBlock(internal_block,n->getWeight()) : n->isLeaf() ?
+                                                                                   getOrAddBlock(leaf_block,n->getWeight()) : NULL;
+    if (temp != NULL)
+        temp->push(n);
+}
+
+/*
+ * removeNodeFromBlock(..)
+ * - removes node from block if
+ *   it exists in there.
+ * - returns false if node didn't
+ *   existed in blocks yet.
+ */
+bool HuffmanTree::removeNodeFromBlock(node* n){
+    block* current_block = getNodeBlock(n);
+    if (current_block == NULL)
+        return false;
+    return current_block->remove(n);
+}
+
+
+
+
+// ------------------------------------------------------------------------------
+// Utility function
 
 /*
  * getNodeBlock(..)
@@ -213,6 +286,11 @@ HuffmanTree::block* HuffmanTree::getNodeBlock(node *n) {
 /*
  * addBlock(..)
  * - adds a new block at given [wt] in the map.
+ *
+ * Memory Allocated     : temp (new block)
+ * Memory Deallocated   : none
+ *
+ * return : new block
  */
 HuffmanTree::block* HuffmanTree::addBlock(std::unordered_map<int,block*>& blocks,int wt){
     block* temp = new block;
@@ -231,67 +309,6 @@ HuffmanTree::block* HuffmanTree::getOrAddBlock(std::unordered_map<int,block*>& b
     return it == blocks.end() ? addBlock(blocks,wt) : it->second;
 }
 
-
-/*
- * addNodeToBlock(..)
- * - adds node to the block
- *   as per the configuration
- *   of the node.
- */
-void HuffmanTree::addNodeToBlock(node* n){
-    block* temp = n->isInternal() ? getOrAddBlock(internal_block,n->getWeight()) : n->isLeaf() ?
-                                                                                   getOrAddBlock(leaf_block,n->getWeight()) : NULL;
-    if (temp != NULL)
-        temp->push(n);
-}
-
-
-/*
- * removeNodeFromBlock(..)
- * - removes node from block if
- *   it exists in there.
- * - returns false if node didn't
- *   existed in blocks yet.
- */
-bool HuffmanTree::removeNodeFromBlock(node* n){
-    block* current_block = getNodeBlock(n);
-    if (current_block == NULL)
-        return false;
-    return current_block->remove(n);
-}
-
-
-/*
- * slide(n,b)
- * - slides n node through b block
- *   by swapping n with each node in
- *   b block.
- */
-void HuffmanTree::slide(node* n1,block* b){
-    if (n1 == NULL || b == NULL)
-        return;
-    std::list<node*> L = b->getList();
-    for (auto it=L.begin();it!=L.end();it++)
-        swap(n1,*it);
-}
-
-/*
- * swap(n1,n2).
- * - swaps n1 with n2
- * - fixes parent child relationship
- *
- * - doesn't work while swapping parent with its child
- */
-void HuffmanTree::swap(node* n1,node* n2){
-    // can't swap parent with child
-    if (n1->getParent() == n2 || n2->getParent() == n1)
-        return;
-
-    node temp;
-    replace(&temp,n2);
-    replace(n2,n1);
-    replace(n1,&temp);
-}
 
 /*
  * replace(n1,n2)
