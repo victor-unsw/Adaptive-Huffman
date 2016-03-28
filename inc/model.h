@@ -210,6 +210,23 @@ class HuffmanTree{
          */
         std::list<node*>& getList();
 
+        /*
+         * leader()
+         * - returns leader of the block
+         *   i.e. last element of the list.
+         */
+        node* leader(){
+            return L.size() == 0 ? NULL : L.back();
+        }
+
+        /*
+         * swapLeader(n).
+         * - if node n exists in block
+         *   it gets swapped with block
+         *   leader in the list positioning.
+         */
+        bool swapLeader(node* n);
+
     };
 
 
@@ -251,6 +268,14 @@ class HuffmanTree{
      * - fixes parent child relationship
      */
     void swap(node* n1,node* n2);
+
+    /*
+     * swapLeader(n)
+     * - swap the leader with node n
+     *   of block in which node n is
+     *   contained.
+     */
+    void swapNodeWithLeader(node* n);
 
     /*
      * slide(n,b)
@@ -357,18 +382,14 @@ class HuffmanTree{
     block* getOrAddBlock(std::unordered_map<int,block*>& blocks,int wt);
 
     /*
-     * CheckNYT()
-     * - checks whether the node pointed by
-     *   NYT variable is actually an NYT node.
+     * sibling()
+     * - returns sibling of given node n
      */
-    bool checkNYT(){
-        return NYT->isNYT();
-    }
+    node* sibling(node* n);
 
 
     void drawSpaces(int d);
     void drawTree(node* n,int depth);
-    void display();
 
 public:
 
@@ -382,6 +403,7 @@ public:
 
     void update(unsigned char c);
 
+    void display();
 };
 
 

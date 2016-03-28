@@ -98,6 +98,9 @@ void HuffmanTree::node::incrementWeight(){
 
 
 
+
+
+
 // ==============================================================================
 // HuffmanTree::block
 // ==============================================================================
@@ -130,7 +133,6 @@ bool HuffmanTree::block::remove(node *n) {
     return false;
 }
 
-
 /*
  * getList(..)
  * - returns the L as reference pointer
@@ -139,6 +141,33 @@ bool HuffmanTree::block::remove(node *n) {
 std::list<HuffmanTree::node*>& HuffmanTree::block::getList(){
     return L;
 }
+
+/*
+ * swapLeader(n).
+ * - if node n exists in block
+ *   it gets swapped with block
+ *   leader in the list positioning.
+ */
+bool HuffmanTree::block::swapLeader(node* n){
+    if (L.empty())
+        return false;
+
+    std::list<node*>::iterator it = std::find(L.begin(),L.end(),n);
+    if(it == L.end())
+        return false;
+
+    node* temp = *it;
+    *it = leader();                                             // leader swapped
+    it  = L.end(); --it;                                        // iterator pointed to leader position
+    *it = temp;                                                 // new leader assigned
+
+    return true;
+}
+
+
+
+
+
 
 
 
@@ -154,8 +183,6 @@ std::list<HuffmanTree::node*>& HuffmanTree::block::getList(){
 // Core functions
 
 void HuffmanTree::update(unsigned char c) {
-    std::cout << "\nupdating...." << std::endl;
-
     P   = getSymbolNode(c);
     LI  = NULL;
 
@@ -169,9 +196,15 @@ void HuffmanTree::update(unsigned char c) {
     // P is Symbol node i.e. symbol
     // already in tree
     else{
+        swapNodeWithLeader(P);
 
+        // update P (not very useful)
+        if (sibling(P) == NYT){
+            std::cout << "invoked : should be noted\n";
+            LI = P;
+            P = P->getParent();
+        }
     }
-
 
     // Step 3
     // Slide And Increment until root
@@ -185,10 +218,8 @@ void HuffmanTree::update(unsigned char c) {
         slideAndIncrement();
     }
 
-    display();
     P   = NULL;
     LI  = NULL;
-    std::cin.get();
 }
 
 /*
@@ -284,7 +315,7 @@ void HuffmanTree::slide(node* n1,block* b){
  */
 void HuffmanTree::swap(node* n1,node* n2){
     // can't swap parent with child
-    if (n1->getParent() == n2 || n2->getParent() == n1)
+    if (n1->getParent() == n2 || n2->getParent() == n1 || n1 == n2)
         return;
 
     node temp;                                  // local variable; memory deallocated automatically
@@ -293,7 +324,22 @@ void HuffmanTree::swap(node* n1,node* n2){
     replace(n1,&temp);
 }
 
-
+/*
+ * swapLeader(n)
+ * - swap the leader with node n
+ *   of block in which node n is
+ *   contained.
+ */
+void HuffmanTree::swapNodeWithLeader(node* n){
+    block* nodeBlock = getNodeBlock(n);
+    if (nodeBlock == NULL){
+        std::cout << "current node has no block : ERROR";
+        std::cin.get();
+    }
+    node* leader = nodeBlock->leader();                                 // get leader of the block
+    nodeBlock->swapLeader(n);                                           // swap them internally in block
+    swap(n,leader);                                                     // swap externally; parent
+}
 
 
 // ------------------------------------------------------------------------------
@@ -305,7 +351,7 @@ void HuffmanTree::swap(node* n1,node* n2){
  *   as per the configuration
  *   of the node.
  */
-void HuffmanTree::addNodeToBlock(node* n){
+void HuffmanTree::addNodeToBlock(HuffmanTree::node* n){
     block* temp = n->isInternal() ? getOrAddBlock(internal_block,n->getWeight()) : n->isLeaf() ?
                                                                                    getOrAddBlock(leaf_block,n->getWeight()) : NULL;
     if (temp != NULL)
@@ -347,6 +393,7 @@ HuffmanTree::block* HuffmanTree::getNextBlock(node* n){
         // target block weight = n->wt
         return getBlock(internal_block,n->getWeight());
     }
+    return NULL;
 }
 
 
@@ -374,6 +421,20 @@ void HuffmanTree::replace(node* n1,node* n2){
         n2->getParent()->setLeft(n1);
     else
         n2->getParent()->setRight(n1);
+}
+
+/*
+ * sibling()
+ * - returns sibling of given node n
+ */
+HuffmanTree::node* HuffmanTree::sibling(node* n){
+    if (n == NULL || n->getParent() == NULL)
+        return NULL;
+    bool left = n->getParent()->getLeft() == n;
+    if (left)
+        return n->getParent()->getRight();
+    else
+        return n->getParent()->getLeft();
 }
 
 /*
