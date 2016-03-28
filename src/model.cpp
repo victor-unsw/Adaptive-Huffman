@@ -175,6 +175,7 @@ HuffmanTree::node* HuffmanTree::insert(unsigned char c){
     addNodeToBlock(R);
     addNodeToBlock(P);
 
+    size+=2;
     return P;
 }
 
@@ -251,3 +252,52 @@ bool HuffmanTree::removeNodeFromBlock(node* n){
         return false;
     return current_block->remove(n);
 }
+
+
+/*
+ * swap(n1,n2).
+ * - swaps n1 with n2
+ * - fixes parent child relationship
+ *
+ * - doesn't work while swapping parent with its child
+ */
+void HuffmanTree::swap(node& n1,node& n2){
+    // can't swap parent with child
+    if (n1.getParent() == &n2 || n2.getParent() == &n1)
+        return;
+
+    node temp;
+    replace(temp,n2);
+    replace(n2,n1);
+    replace(n1,temp);
+}
+
+/*
+ * replace(n1,n2)
+ * - replaces n1 in place of n2.
+ * - fixes parent child relation
+ */
+void HuffmanTree::replace(node& n1,node& n2){
+    // in no scenario we replace with root
+    // of the tree
+    if (ROOT == &n2 || n2.getParent() == NULL) {
+        std::cout << "trying to replace with root" << std::endl;
+        return;
+    }
+
+    bool left = n2.getParent()->getLeft() == &n2;           // is n2 left child of parent
+
+    n1.setParent(n2.getParent());
+    if (left)
+        n2.getParent()->setLeft(&n1);
+    else
+        n2.getParent()->setRight(&n1);
+}
+
+
+
+
+
+
+
+

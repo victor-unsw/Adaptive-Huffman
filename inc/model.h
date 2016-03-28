@@ -14,7 +14,7 @@ class HuffmanTree{
     class node;
 
     class node{
-
+        friend class HuffmanTree;
         node            * p,                                // parent node
                         * l,                                // left node
                         * r;                                // right node
@@ -105,6 +105,15 @@ class HuffmanTree{
          * - Increases the weight of current node by 1.
          */
         void incrementWeight();
+
+
+        void showNode(){
+            std::cout << "Self : " << this << ":" << this->code
+            << " , P : " << p  << ":" << (p!=NULL? char(p->code) :'0')
+            << " , L : " << l  << ":" << (l!=NULL? char(l->code) :'0')
+            << " , R : " << r  << ":" << (r!=NULL? char(r->code) :'0')
+            << std::endl;
+        }
 
     };
 
@@ -223,7 +232,23 @@ class HuffmanTree{
      */
     bool removeNodeFromBlock(node* n);
 
+    // ------------------------------------------------------------
+    // Utility Methods
+    // ------------------------------------------------------------
 
+    /*
+     * swap(n1,n2).
+     * - swaps n1 with n2
+     * - fixes parent child relationship
+     */
+    void swap(node& n1,node& n2);
+
+    /*
+     * replace(n1,n2)
+     * - replaces n1 in place of n2.
+     * - fixes parent child relation
+     */
+    void replace(node& n1,node& n2);
 
     /*
      * getNodeBlock(..)
@@ -248,16 +273,16 @@ class HuffmanTree{
      */
     block* getOrAddBlock(std::unordered_map<int,block*>& blocks,int wt);
 
+
 public:
 
-    HuffmanTree():ROOT(NULL),NYT(NULL),size(0),internal_nodes(0),leaf_nodes(0),internal_block(),leaf_block(){
+    HuffmanTree():ROOT(NULL),NYT(NULL),size(0),internal_nodes(0),leaf_nodes(0),internal_block(),leaf_block(),P(NULL),LI(NULL){
         // initial state of huffman tree consist of 1 single NYT node
         // NYT itself is the ROOT initially
         ROOT    = new node(NULL,NULL,NULL, true);
         NYT     = ROOT;
+        size++;
     }
-
-
 
 };
 
