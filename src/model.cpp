@@ -164,6 +164,7 @@ std::list<HuffmanTree::node*>& HuffmanTree::block::getList(){
  * - point NYT to left child
  * - add R to it's block
  * - add P to it's block
+ * - add R to symbol_map[c]
  *
  * Memory Allocation    :   Right Node
  *                          Left Node
@@ -184,6 +185,7 @@ HuffmanTree::node* HuffmanTree::insert(unsigned char c){
     // block management
     addNodeToBlock(R);
     addNodeToBlock(P);
+    symbol_map[c] = R;
 
     size+=2;
     return P;

@@ -208,7 +208,7 @@ class HuffmanTree{
 
     std::unordered_map<int,block*> internal_block;                          // hash map for internal_node->internal_block
     std::unordered_map<int,block*> leaf_block;                              // hash map for leaf_node->leaf_block
-
+    std::unordered_map<unsigned char,node*> symbol_map;                     // mapping from symbol to leaf nodes
 
     // ------------------------------------------------------------
     // CORE Functions
@@ -312,7 +312,7 @@ class HuffmanTree{
 
 public:
 
-    HuffmanTree():ROOT(NULL),NYT(NULL),size(0),internal_nodes(0),leaf_nodes(0),internal_block(),leaf_block(),P(NULL),LI(NULL){
+    HuffmanTree():ROOT(NULL),NYT(NULL),size(0),internal_nodes(0),leaf_nodes(0),internal_block(),leaf_block(),symbol_map(),P(NULL),LI(NULL){
         // initial state of huffman tree consist of 1 single NYT node
         // NYT itself is the ROOT initially
         ROOT    = new node(NULL,NULL,NULL, true);
