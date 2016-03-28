@@ -95,6 +95,9 @@ void HuffmanTree::node::incrementWeight(){
 
 
 
+
+
+
 // ==============================================================================
 // HuffmanTree::block
 // ==============================================================================
@@ -113,7 +116,11 @@ void HuffmanTree::block::push(node *n) {
     L.push_front(n);
 }
 
-
+/*
+ * remove(..)
+ * - removes node n pointer from list
+ * - returns true if such node pointer existed
+ */
 bool HuffmanTree::block::remove(node *n) {
     std::list<node*>::iterator target = std::find(L.begin(),L.end(),n);
     if (target != L.end()) {
@@ -126,23 +133,60 @@ bool HuffmanTree::block::remove(node *n) {
 
 
 
+
+
+
+
+
+
 // ==============================================================================
 // HuffmanTree
 // ==============================================================================
 
+/*
+ * insert(node n) :-
+ * - create left child (as NYT node)
+ * - create right child (as character node)
+ * - convert the NYT to internal node
+ * - create parent child relationships
+ * - P is NYT i.e. the new internal node
+ * - LI is right child i.e. the character node
+ * - point NYT to left child
+ * - add R to it's block
+ * - add P to it's block
+ *
+ * Memory Allocation    :   Right Node
+ *                          Left Node
+ * Memory Deallocation  :   None
+ *
+ * Returns : P
+ */
 HuffmanTree::node* HuffmanTree::insert(unsigned char c){
     node* R = new node(NYT,NULL,NULL, false,c);
     node* L = new node(NYT,NULL,NULL,true);
     NYT->makeInternal();                                                // make it internal
     NYT->setLeft(L);                                                    // set left child
     NYT->setRight(R);                                                   // set right child
+    P   = NYT;                                                          // the new internal node
+    LI  = R;                                                            // leaf to increment is Right child
     NYT = L;                                                            // new NYT is left child
 
-    // block management remaining
+    // block management
+    addNodeToBlock(R);
+    addNodeToBlock(P);
 
-    return R->getParent();
+    return P;
 }
 
+
+/*
+ * getNodeBlock(..)
+ * - returns block of given node from either
+ *   internal_block / leaf_block as per config.
+ *
+ * NOTE : blocks are returned acc. to current state
+ *        of node.
+ */
 HuffmanTree::block* HuffmanTree::getNodeBlock(node *n) {
     std::unordered_map<int,block*>::iterator it;
     if (n->isLeaf()){
@@ -157,8 +201,53 @@ HuffmanTree::block* HuffmanTree::getNodeBlock(node *n) {
     return NULL;
 }
 
+
+/*
+ * addBlock(..)
+ * - adds a new block at given [wt] in the map.
+ */
 HuffmanTree::block* HuffmanTree::addBlock(std::unordered_map<int,block*>& blocks,int wt){
     block* temp = new block;
     blocks[wt] = temp;
     return temp;
+}
+
+
+/*
+ * getOrAddBlock(..)
+ * - it returns the block if it exists
+ *   or adds a new block and returns it
+ */
+HuffmanTree::block* HuffmanTree::getOrAddBlock(std::unordered_map<int,block*>& blocks,int wt){
+    std::unordered_map<int,block*>::iterator it = blocks.find(wt);
+    return it == blocks.end() ? addBlock(blocks,wt) : it->second;
+}
+
+
+/*
+ * addNodeToBlock(..)
+ * - adds node to the block
+ *   as per the configuration
+ *   of the node.
+ */
+void HuffmanTree::addNodeToBlock(node* n){
+    block* temp = n->isInternal() ? getOrAddBlock(internal_block,n->getWeight()) : n->isLeaf() ?
+                                                                                   getOrAddBlock(leaf_block,n->getWeight()) : NULL;
+    if (temp != NULL)
+        temp->push(n);
+}
+
+
+/*
+ * removeNodeFromBlock(..)
+ * - removes node from block if
+ *   it exists in there.
+ * - returns false if node didn't
+ *   existed in blocks yet.
+ */
+bool HuffmanTree::removeNodeFromBlock(node* n){
+    block* current_block = getNodeBlock(n);
+    if (current_block == NULL)
+        return false;
+    return current_block->remove(n);
 }

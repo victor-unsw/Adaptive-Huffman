@@ -35,7 +35,7 @@ class HuffmanTree{
         // ------------------------------------------------------------
 
         node(node* parent = NULL,node* left = NULL,node* right = NULL, bool isNYT = false, unsigned char c = 0)
-                :p(parent),l(left),r(right),NYT(isNYT),wt(0),is_internal(false),code(isNYT?0:c) {}
+                :p(parent),l(left),r(right),NYT(isNYT),wt(0),is_internal(false),code(isNYT?(char)0:c) {}
 
         ~node(){
             p = l = r = NULL;
@@ -177,12 +177,15 @@ class HuffmanTree{
 
     node*       ROOT;                                                       // pointer to Root node
     node*       NYT;                                                        // pointer to NYT node
+    node*       P;                                                          // POINTER TO SYMBOL NODE
+    node*       LI;                                                         // LEAF TO INCREMENT
     unsigned    size;                                                       // total nodes in tree
     unsigned    internal_nodes;                                             // total internal nodes
     unsigned    leaf_nodes;                                                 // total leaf nodes
 
     std::unordered_map<int,block*> internal_block;                          // hash map for internal_node->internal_block
     std::unordered_map<int,block*> leaf_block;                              // hash map for leaf_node->leaf_block
+
 
     // ------------------------------------------------------------
     // CORE Functions
@@ -194,17 +197,41 @@ class HuffmanTree{
      *
      * Memory Allocation    :   Right Node
      *                          Left Node
-     *
      * Memory Deallocation  :   None
      *
      * Returns : internal node created instead of NYT
      */
     node* insert(unsigned char c);
 
+
+    // ------------------------------------------------------------
+    // BLOCK Management
+    // ------------------------------------------------------------
+
+    /*
+     * addNodeToBlock(..)
+     * - adds node to the block
+     *   as per the configuration
+     *   of the node.
+     */
+    void addNodeToBlock(node* n);
+
+    /*
+     * removeNodeFromBlock(..)
+     * - removes node from block if
+     *   it exists in there.
+     */
+    bool removeNodeFromBlock(node* n);
+
+
+
     /*
      * getNodeBlock(..)
      * - returns block of given node from either
      *   internal_block / leaf_block as per config.
+     *
+     * NOTE : blocks are returned acc. to current state
+     *        of node.
      */
     block* getNodeBlock(node* n);
 
@@ -214,7 +241,12 @@ class HuffmanTree{
      */
     block* addBlock(std::unordered_map<int,block*>& blocks,int wt);
 
-    bool isNodeInBlock(node* n);
+    /*
+     * getOrAddBlock(..)
+     * - it returns the block if it exists
+     *   or adds a new block and returns it
+     */
+    block* getOrAddBlock(std::unordered_map<int,block*>& blocks,int wt);
 
 public:
 
