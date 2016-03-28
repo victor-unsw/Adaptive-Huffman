@@ -157,6 +157,14 @@ class HuffmanTree{
         }
 
 
+        void showBlockNodes(){
+            std::cout << "BLOCK :-\n";
+            for(auto it=L.begin();it!=L.end();it++){
+                (*it)->showNode();
+            }
+        }
+
+
         // ------------------------------------------------------------
         // Block Core Functions
         // ------------------------------------------------------------
@@ -176,6 +184,12 @@ class HuffmanTree{
          */
         bool remove(node* n);
 
+        /*
+         * getList(..)
+         * - returns the L as reference pointer
+         * - copy of list isn't made to save time.
+         */
+        std::list<node*>& getList();
 
     };
 
@@ -212,6 +226,20 @@ class HuffmanTree{
      */
     node* insert(unsigned char c);
 
+    /*
+     * swap(n1,n2).
+     * - swaps n1 with n2
+     * - fixes parent child relationship
+     */
+    void swap(node* n1,node* n2);
+
+    /*
+     * slide(n,b)
+     * - slides n node through b block
+     *   by swapping n with each node in
+     *   b block.
+     */
+    void slide(node* n1,block* b);
 
     // ------------------------------------------------------------
     // BLOCK Management
@@ -236,19 +264,13 @@ class HuffmanTree{
     // Utility Methods
     // ------------------------------------------------------------
 
-    /*
-     * swap(n1,n2).
-     * - swaps n1 with n2
-     * - fixes parent child relationship
-     */
-    void swap(node& n1,node& n2);
 
     /*
      * replace(n1,n2)
      * - replaces n1 in place of n2.
      * - fixes parent child relation
      */
-    void replace(node& n1,node& n2);
+    void replace(node* n1,node* n2);
 
     /*
      * getNodeBlock(..)
@@ -282,6 +304,50 @@ public:
         ROOT    = new node(NULL,NULL,NULL, true);
         NYT     = ROOT;
         size++;
+    }
+
+
+    void testSlide(){
+        node a(0,0,0,false,'a');
+        node b(0,0,0,false,'b');
+        node c(0,0,0,false,'c');
+        node d(0,0,0,false,'d');
+        node e(0,0,0,false,'e');
+        node f(0,0,0,false,'f');
+        node g(0,0,0,false,'g');
+        node h(0,0,0,false,'h');
+        node i(0,0,0,false,'i');
+        node j(0,0,0,false,'j');
+        std::cout << "here " << std::endl;
+
+
+        a.setLeft(&b);  b.setParent(&a);
+        c.setRight(&d); d.setParent(&c);
+        e.setRight(&f); f.setParent(&e);
+        g.setLeft(&h);  h.setParent(&g);
+        i.setLeft(&j);  j.setParent(&i);
+
+        d.incrementWeight();
+        f.incrementWeight();
+        h.incrementWeight();
+        j.incrementWeight();
+
+        addNodeToBlock(&d);
+        addNodeToBlock(&f);
+        addNodeToBlock(&h);
+        addNodeToBlock(&j);
+
+        block* current_block = getNodeBlock(&d);
+
+        std::cout << "before slide : " << std::endl;
+        b.showNode();
+        current_block->showBlockNodes();
+
+        slide(&b,current_block);
+
+        std::cout << "\n\nafter slide : " << std::endl;
+        b.showNode();
+        current_block->showBlockNodes();
     }
 
 };
