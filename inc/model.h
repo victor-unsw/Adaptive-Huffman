@@ -50,16 +50,25 @@ class HuffmanTree{
             return p;
         }
         node* setParent(node* p);
+        bool hasParent(){
+            return p != NULL;
+        }
 
         node* getLeft(){
             return l;
         }
         node* setLeft(node* l);
+        bool hasLeft(){
+            return l != NULL;
+        }
 
         node* getRight(){
             return r;
         }
         node* setRight(node* r);
+        bool hasRight(){
+            return r != NULL;
+        }
 
         unsigned char getCode(){
             return code;
@@ -113,6 +122,16 @@ class HuffmanTree{
             << " , L : " << l  << ":" << (l!=NULL? char(l->code) :'0')
             << " , R : " << r  << ":" << (r!=NULL? char(r->code) :'0')
             << std::endl;
+        }
+
+        void printInfo(){
+            if (isInternal())
+                std::cout << "®:"<<wt;
+            else
+            if (isLeaf())
+                std::cout << char(code) <<":"<<wt;
+            else if (isNYT())
+                std::cout << "ø";
         }
 
     };
@@ -241,9 +260,30 @@ class HuffmanTree{
      */
     void slide(node* n1,block* b);
 
+    /*
+     * slideAndIncrement()
+     * - slides the P node according
+     *   to algorithm.
+     */
+    void slideAndIncrement();
+
+
     // ------------------------------------------------------------
     // BLOCK Management
     // ------------------------------------------------------------
+
+    /*
+     * getNextBlock()
+     * - returns the next block in the
+     *   block hierarchy. i.e. LILILILI
+     * - returns NULL if no such block
+     *   exists.
+
+     * NOTE : next block is searched in the
+     *        opposite blocks i.e. L for I
+     *        and I for L.
+     */
+    block* getNextBlock(node* n);
 
     /*
      * addNodeToBlock(..)
@@ -260,10 +300,10 @@ class HuffmanTree{
      */
     bool removeNodeFromBlock(node* n);
 
+
     // ------------------------------------------------------------
     // Utility Methods
     // ------------------------------------------------------------
-
 
     /*
      * replace(n1,n2)
@@ -271,6 +311,15 @@ class HuffmanTree{
      * - fixes parent child relation
      */
     void replace(node* n1,node* n2);
+
+    /*
+     * getSymbolNode(..)
+     * - returns the leaf node from
+     *   symbol_map for particular c
+     *   character if exists.
+     *   else return NYT.
+     */
+    node* getSymbolNode(unsigned char c);
 
     /*
      * getNodeBlock(..)
@@ -281,6 +330,13 @@ class HuffmanTree{
      *        of node.
      */
     block* getNodeBlock(node* n);
+
+    /*
+     * getBlock(..)
+     * - returns blocks[wt] value;
+     * - returns null if no such value exist.
+     */
+    block* getBlock(std::unordered_map<int,block*>& blocks,int wt);
 
     /*
      * addBlock(..)
@@ -310,6 +366,10 @@ class HuffmanTree{
     }
 
 
+    void drawSpaces(int d);
+    void drawTree(node* n,int depth);
+    void display();
+
 public:
 
     HuffmanTree():ROOT(NULL),NYT(NULL),size(0),internal_nodes(0),leaf_nodes(0),internal_block(),leaf_block(),symbol_map(),P(NULL),LI(NULL){
@@ -320,8 +380,7 @@ public:
         size++;
     }
 
-
-
+    void update(unsigned char c);
 
 };
 
