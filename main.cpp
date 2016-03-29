@@ -8,6 +8,11 @@ using namespace std;
 
 int main(int argc,const char** argv) {
 
+
+    Encoder e;
+    e.display();
+
+    /*
     HuffmanTree tree;
 
     string s("e eae de eabe eae dcf");
@@ -19,6 +24,6 @@ int main(int argc,const char** argv) {
 
     const string* path = tree.path('x');
     cout << "path : " << *path << endl;
-
+    */
     return 0;
 }

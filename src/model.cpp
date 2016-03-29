@@ -233,11 +233,11 @@ void HuffmanTree::update(char c) {
      *
      * return : string (path)
      */
-const std::string* HuffmanTree::path(char c){
+bool HuffmanTree::path(char c,std::string* path){
     node* n             = getSymbolNode(c);
-    std::string* path   = new std::string;
+    bool  result        = n == NYT;
     generatePath(n,path);
-    return path;
+    return result;
 }
 
 /*
@@ -429,6 +429,18 @@ void HuffmanTree::generatePath(node* n,std::string* path){
     char symbol = n->getParent()->getLeft() == n ? '0' : '1';
     path->insert(path->begin(),symbol);
     generatePath(n->getParent(),path);
+}
+
+
+/*
+ * returns exit code
+ */
+const std::string* HuffmanTree::exitCode() {
+    node* n             = NYT;
+    std::string* path   = new std::string;
+    generatePath(n,path);
+    path->push_back('1');
+    return path;
 }
 
 /*

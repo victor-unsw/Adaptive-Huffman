@@ -422,9 +422,15 @@ public:
      * Memory Allocated     : string (i.e. path)
      * Memory Deallocated   : none
      *
-     * return : string (path)
+     * return : false if c exist
+     *          true if NYT
      */
-    const std::string* path(char c);
+    bool path(char c,std::string* s);
+
+    /*
+     * returns exit code
+     */
+    const std::string* exitCode();
 
     void display();
 };

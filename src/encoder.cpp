@@ -28,14 +28,27 @@ std::vector<char>* Encoder::encodeBuffer(const std::string& s) {
     char BYTE   = 0;
 
     // iterate through each character in string s
-    for (auto it=s.begin();it!=s.end();it++,--l){
-        if (l < 0){
-            l = 7;
-            codes->push_back(BYTE);                         // push current BYTE
-            BYTE = 0;                                       // introduce new BYTE
+    for (auto c =s.begin(); c !=s.end(); c++){
+
+        std::string* path = new std::string;
+        bool isNYT = model.path(*c,path);
+        if (isNYT){
+            path->append(generateCode(*c));
         }
-        if (*it == '1')
-            BYTE |= 1 << l;
+
+        // for each binary code in path
+        for(auto it=path->begin();it!=path->end();it++) {
+            if (l < 0) {
+                l = 7;
+                codes->push_back(BYTE);                         // push current BYTE
+                BYTE = 0;                                       // introduce new BYTE
+            }
+            if (*it == '1')
+                BYTE |= 1 << l;
+            --l;
+        }
+        model.update(*c);
+        delete path;
     }
 
     // invariant :-
@@ -49,7 +62,8 @@ std::vector<char>* Encoder::encodeBuffer(const std::string& s) {
     if (r > 0){
         // do padding
         std::cout << "padding bits\n";
-        std::string NYTCode = getNYTCode();
+        const std::string NYTCode = *model.exitCode();
+
         for (auto it=NYTCode.begin();it!=NYTCode.end();it++,--l){
             if (l < 0){
                 l = 7;
@@ -70,6 +84,24 @@ std::vector<char>* Encoder::encodeBuffer(const std::string& s) {
     }
 
     return codes;
+}
+
+/*
+ * generateCode(c)
+ * - generates the binary code of Byte C
+ *   in format
+ */
+std::string Encoder::generateCode(char c){
+    std::string code;
+    char x = 0;
+    for (int i = 7; i >= 0; --i) {
+        x |= 1 << i;
+        if (c&x)
+            code.push_back('1');
+        else code.push_back('0');
+        x = 0;
+    }
+    return code;
 }
 
 
@@ -96,8 +128,8 @@ void Encoder::showBinary(char c, bool show) {
 }
 
 void Encoder::encodeShow() {
-    std::cout << "padding string  : " << getNYTCode() << std::endl;
-    std::string value = "0110000111111111111111111111111111111111";
+
+    std::string value = "e eae de eabe eae dcf";
     std::cout << "Encoding string : " << value << " [" << value.size() << "]\n";
 
     std::vector<char>* codes = encodeBuffer(value);
@@ -106,13 +138,8 @@ void Encoder::encodeShow() {
         showBinary(*i,false);
     }
     std::cout << "[" << codes->size() << "]" << std::endl;
-}
 
-/*
- * getNYTCode()
- * - returns code for NYT node + '1' mark
- *   to represent [1000000] sign bit
- */
-std::string Encoder::getNYTCode(){
-    return "0011101";               // 001110 + 1
+    model.display();
+
+
 }

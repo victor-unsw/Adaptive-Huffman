@@ -8,10 +8,13 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include "model.h"
 
 class Encoder{
 
 private:
+
+    HuffmanTree model;
 
     // ------------------------------------------------------------
     // Core Methods
@@ -31,23 +34,19 @@ private:
      */
     std::vector<char>* encodeBuffer(const std::string& s);
 
+    std::string generateCode(char c);
 
     // ------------------------------------------------------------
     // Utility Methods
     // ------------------------------------------------------------
-
-    /*
-     * getNYTCode()
-     * - returns code for NYT node + '1' mark
-     *   to represent [1000000] sign bit
-     */
-    std::string getNYTCode();
 
     void encodeShow();
 
     void showBinary(char c, bool show);
 
 public:
+
+    Encoder():model(){}
 
     void display(){
 
