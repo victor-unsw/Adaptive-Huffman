@@ -8,6 +8,7 @@
 #include <list>
 #include <unordered_map>
 #include <algorithm>
+class Decoder;
 
 class HuffmanTree{
 
@@ -229,6 +230,7 @@ class HuffmanTree{
 
     };
 
+    friend class Decoder;
 
     // ------------------------------------------------------------
     // Instance Variables

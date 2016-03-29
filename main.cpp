@@ -1,20 +1,23 @@
 #include <iostream>
 #include <string>
 
-#include "model.h"
+#include "decoder.h"
 #include "encoder.h"
+
 
 using namespace std;
 
 int main(int argc,const char** argv) {
 
-
     Encoder e;
     e.display();
 
-    /*
-    HuffmanTree tree;
+    Decoder d;
+    d.display();
 
+
+
+/*
     string s("e eae de eabe eae dcf");
     for (auto it=s.begin();it!=s.end();it++) {
         tree.update(*it);

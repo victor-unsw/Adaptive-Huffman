@@ -200,7 +200,7 @@ void HuffmanTree::update(char c) {
 
         // update P (not very useful)
         if (sibling(P) == NYT){
-            std::cout << "invoked : should be noted\n";
+            //std::cout << "invoked : should be noted\n";
             LI = P;
             P = P->getParent();
         }
