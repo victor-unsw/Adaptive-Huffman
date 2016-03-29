@@ -2,17 +2,16 @@
 #include <string>
 
 #include "model.h"
+#include "encoder.h"
 
 using namespace std;
 
 int main(int argc,const char** argv) {
 
-    HuffmanTree tree;
+    Encoder e;
 
-    string s("e eae de eabe eae dcf");
-    for (auto it=s.begin();it!=s.end();it++) {
-        tree.update(*it);
-    }
-    tree.display();
+    e.display();
+
+
     return 0;
 }
