@@ -19,7 +19,7 @@ class HuffmanTree{
                         * l,                                // left node
                         * r;                                // right node
 
-        unsigned char   code;                               // leaf node code
+        char            code;                               // leaf node code
         unsigned        wt;                                 // weight of node
         bool            is_internal;                        // Leaf / Internal Node
         bool            NYT;                                // is 'not yet transferred' Node
@@ -34,7 +34,7 @@ class HuffmanTree{
         // Constructor & Destructor
         // ------------------------------------------------------------
 
-        node(node* parent = NULL,node* left = NULL,node* right = NULL, bool isNYT = false, unsigned char c = 0)
+        node(node* parent = NULL,node* left = NULL,node* right = NULL, bool isNYT = false, char c = 0)
                 :p(parent),l(left),r(right),NYT(isNYT),wt(0),is_internal(false),code(isNYT?(char)0:c) {}
 
         ~node(){
@@ -70,10 +70,10 @@ class HuffmanTree{
             return r != NULL;
         }
 
-        unsigned char getCode(){
+        char getCode(){
             return code;
         }
-        void setCode(unsigned char c);
+        void setCode(char c);
 
         // ------------------------------------------------------------
         // Node State Functions
@@ -244,7 +244,7 @@ class HuffmanTree{
 
     std::unordered_map<int,block*> internal_block;                          // hash map for internal_node->internal_block
     std::unordered_map<int,block*> leaf_block;                              // hash map for leaf_node->leaf_block
-    std::unordered_map<unsigned char,node*> symbol_map;                     // mapping from symbol to leaf nodes
+    std::unordered_map<char,node*> symbol_map;                     // mapping from symbol to leaf nodes
 
     // ------------------------------------------------------------
     // CORE Functions
@@ -260,7 +260,7 @@ class HuffmanTree{
      *
      * Returns : internal node created instead of NYT
      */
-    node* insert(unsigned char c);
+    node* insert(char c);
 
     /*
      * swap(n1,n2).
@@ -331,6 +331,12 @@ class HuffmanTree{
     // ------------------------------------------------------------
 
     /*
+     * generatePath(n)
+     * - generates path from node n to root
+     */
+    void generatePath(node* n,std::string* path);
+
+    /*
      * replace(n1,n2)
      * - replaces n1 in place of n2.
      * - fixes parent child relation
@@ -344,7 +350,7 @@ class HuffmanTree{
      *   character if exists.
      *   else return NYT.
      */
-    node* getSymbolNode(unsigned char c);
+    node* getSymbolNode(char c);
 
     /*
      * getNodeBlock(..)
@@ -391,6 +397,10 @@ class HuffmanTree{
     void drawSpaces(int d);
     void drawTree(node* n,int depth);
 
+
+
+
+
 public:
 
     HuffmanTree():ROOT(NULL),NYT(NULL),size(0),internal_nodes(0),leaf_nodes(0),internal_block(),leaf_block(),symbol_map(),P(NULL),LI(NULL){
@@ -401,7 +411,20 @@ public:
         size++;
     }
 
-    void update(unsigned char c);
+    void update(char c);
+
+    /*
+     * path(c)
+     * - returns path from root to
+     *   character c if exists.
+     *   else return path to NYT.
+     *
+     * Memory Allocated     : string (i.e. path)
+     * Memory Deallocated   : none
+     *
+     * return : string (path)
+     */
+    const std::string* path(char c);
 
     void display();
 };

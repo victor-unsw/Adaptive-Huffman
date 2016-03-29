@@ -51,7 +51,7 @@ HuffmanTree::node* HuffmanTree::node::setRight(HuffmanTree::node* r){
  * setCode(..)
  * - sets the code of leaf node as parameter 'c'.
  */
-void HuffmanTree::node::setCode(unsigned char c) {
+void HuffmanTree::node::setCode(char c) {
     this->code = c;
 }
 
@@ -182,7 +182,7 @@ bool HuffmanTree::block::swapLeader(node* n){
 // ------------------------------------------------------------------------------
 // Core functions
 
-void HuffmanTree::update(unsigned char c) {
+void HuffmanTree::update(char c) {
     P   = getSymbolNode(c);
     LI  = NULL;
 
@@ -220,6 +220,24 @@ void HuffmanTree::update(unsigned char c) {
 
     P   = NULL;
     LI  = NULL;
+}
+
+/*
+     * path(c)
+     * - returns path from root to
+     *   character c if exists.
+     *   else return path to NYT.
+     *
+     * Memory Allocated     : string (i.e. path)
+     * Memory Deallocated   : none
+     *
+     * return : string (path)
+     */
+const std::string* HuffmanTree::path(char c){
+    node* n             = getSymbolNode(c);
+    std::string* path   = new std::string;
+    generatePath(n,path);
+    return path;
 }
 
 /*
@@ -273,7 +291,7 @@ void HuffmanTree::slideAndIncrement(){
  *
  * Returns : P
  */
-HuffmanTree::node* HuffmanTree::insert(unsigned char c){
+HuffmanTree::node* HuffmanTree::insert(char c){
     node* R = new node(NYT,NULL,NULL, false,c);
     node* L = new node(NYT,NULL,NULL,true);
     NYT->makeInternal();                                                // make it internal
@@ -400,6 +418,18 @@ HuffmanTree::block* HuffmanTree::getNextBlock(node* n){
 // ------------------------------------------------------------------------------
 // Utility function
 
+/*
+ * generatePath(n)
+ * - generates path from node n to root
+ */
+void HuffmanTree::generatePath(node* n,std::string* path){
+    if (ROOT == n || n->getParent() == NULL)
+        return;
+
+    char symbol = n->getParent()->getLeft() == n ? '0' : '1';
+    path->insert(path->begin(),symbol);
+    generatePath(n->getParent(),path);
+}
 
 /*
  * replace(n1,n2)
@@ -444,8 +474,8 @@ HuffmanTree::node* HuffmanTree::sibling(node* n){
  *   character if exists.
  *   else return NYT.
  */
-HuffmanTree::node* HuffmanTree::getSymbolNode(unsigned char c) {
-    std::unordered_map<unsigned char,node*>::iterator it = symbol_map.find(c);
+HuffmanTree::node* HuffmanTree::getSymbolNode(char c) {
+    std::unordered_map<char,node*>::iterator it = symbol_map.find(c);
     if (it == symbol_map.end())
         return NYT;
     return it->second;
