@@ -5,10 +5,12 @@
 #ifndef ADAPTIVE_HUFFMAN_MODEL_H
 #define ADAPTIVE_HUFFMAN_MODEL_H
 
+#include <iostream>
 #include <list>
 #include <unordered_map>
 #include <algorithm>
 class Decoder;
+class ahdecode;
 
 class HuffmanTree{
 
@@ -231,6 +233,7 @@ class HuffmanTree{
     };
 
     friend class Decoder;
+    friend class ahdecode;
 
     // ------------------------------------------------------------
     // Instance Variables

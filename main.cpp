@@ -1,32 +1,27 @@
 #include <iostream>
-#include <string>
-
-#include "decoder.h"
-#include "encoder.h"
-
 
 using namespace std;
 
+
+#include "ahencode.h"
+#include "ahdecode.h"
+
+
 int main(int argc,const char** argv) {
 
-    Encoder e;
-    e.display();
 
-    Decoder d;
-    d.display();
+    ahencode e;
+    ahdecode d;
 
+    char * input = new char[1001];
+    string encode;
 
-
-/*
-    string s("e eae de eabe eae dcf");
-    for (auto it=s.begin();it!=s.end();it++) {
-        tree.update(*it);
+    while (cin.getline(input,1001)){
+        string s(input);
+        //encode = e.encodeBuffer(s, true);
+        encode = d.decodeBuffer(s,false);
+        cout << encode << endl;
     }
 
-    tree.display();
-
-    const string* path = tree.path('x');
-    cout << "path : " << *path << endl;
-    */
     return 0;
 }
