@@ -31,10 +31,14 @@ std::string* Decoder::decodeBuffer(const std::string& code){
             char x = 0; x |= 1 << i;
             int dir = (cc&x) ? 1 : 0;
 
-            if(exitCode & dir){
-                // stop judging the code
+            if(exitCode & dir){                                 // i.e. if it's EXIT code & next bit is '1'
+                // stop judging the code                        // that signals byte padding
                 exitCode = false;
                 r = -1;
+
+                out = 0;
+                n = model->ROOT;                                //reset
+
                 break;
             }else if(exitCode)
                 exitCode = false;

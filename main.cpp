@@ -2,26 +2,17 @@
 
 using namespace std;
 
-
-#include "ahencode.h"
-#include "ahdecode.h"
-
+#include "decoder.h"
+#include "encoder.h"
 
 int main(int argc,const char** argv) {
 
+    Encoder e;
+    e.display();
 
-    ahencode e;
-    ahdecode d;
+    Decoder d;
+    d.display();
 
-    char * input = new char[1001];
-    string encode;
-
-    while (cin.getline(input,1001)){
-        string s(input);
-        //encode = e.encodeBuffer(s, true);
-        encode = d.decodeBuffer(s,false);
-        cout << encode << endl;
-    }
 
     return 0;
 }
