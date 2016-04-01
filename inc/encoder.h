@@ -21,6 +21,21 @@ private:
     // Core Methods
     // ------------------------------------------------------------
 
+
+    std::string generateCode(char c);
+
+    // ------------------------------------------------------------
+    // Utility Methods
+    // ------------------------------------------------------------
+
+    void encodeShow();
+
+public:
+
+    Encoder():model(){}
+
+    void showBinary(char c, bool show);
+
     /*
      * encodeBuffer(s)
      * - every character in string s represent
@@ -33,21 +48,7 @@ private:
      *
      * Return : pt to vector<char>
      */
-    std::vector<char>* encodeBuffer(const std::string& s);
-
-    std::string generateCode(char c);
-
-    // ------------------------------------------------------------
-    // Utility Methods
-    // ------------------------------------------------------------
-
-    void encodeShow();
-
-    void showBinary(char c, bool show);
-
-public:
-
-    Encoder():model(){}
+    std::vector<char>* encodeBuffer(std::string& s);
 
     void display(){
 

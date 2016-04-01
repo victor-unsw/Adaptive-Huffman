@@ -2,6 +2,7 @@
 // Created by Demon on 23/03/16.
 //
 #include <iostream>
+#include <fstream>
 #include "decoder.h"
 
 // ------------------------------------------------------------
@@ -13,10 +14,10 @@ std::string* Decoder::decodeBuffer(const std::string& code){
     std::string* result = new std::string;
 
 
-    char out = 0;                                           // output character
-    int r = -1;                                             // read character position
-    bool exitCode = false;
-    HuffmanTree::node* n = model->ROOT;
+//    char out = 0;                                           // output character
+//    int r = -1;                                             // read character position
+//    bool exitCode = false;
+//    HuffmanTree::node* n = model->ROOT;
 
     for (auto c = code.begin();c!=code.end(); c++){
         // for each character in string ... analyse its bits
@@ -90,7 +91,7 @@ std::string* Decoder::decodeBuffer(const std::string& code){
 
     }
 
-    model->display();
+    //model->display();
 
     return result;
 }
@@ -109,4 +110,38 @@ HuffmanTree::node* Decoder::travel(HuffmanTree::node* n,int dir){
     else
         t = n->getLeft();
     return t;
+}
+
+
+
+int main(int args,char** argv){
+
+    std::string     output = "/Users/victorchoudhary/Documents/decoded_file.txt";;
+    std::string     input = "/Users/victorchoudhary/Documents/encoded_file.txt";
+
+    std::ofstream fout(output);
+    std::ifstream fin(input);
+
+    Decoder decoder;
+
+    const int MAX = 5000;
+
+    char* buffer = new char[MAX];
+    std::string* result = NULL;
+
+    while(!fin.eof()){
+        memset(buffer,0,MAX);
+        fin.read(buffer,MAX);
+        std::string temp(buffer);
+        //std::cout << "file : " << temp << std::endl;
+        result = decoder.decodeBuffer(temp);
+        fout.write(result->c_str(),result->size());
+        //std::cout << "decoded :-\n" << *result;
+        delete result;
+    }
+
+    delete [] buffer;
+
+    //decoder.display();
+    return 0;
 }

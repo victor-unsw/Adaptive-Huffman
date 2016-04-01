@@ -16,12 +16,13 @@ class Decoder{
 private:
 
     HuffmanTree *model;
-
+    char out = 0;
+    int r = -1;
+    bool exitCode = false;
+    HuffmanTree::node* n = NULL;
     // ------------------------------------------------------------
     // Core Methods
     // ------------------------------------------------------------
-
-    std::string* decodeBuffer(const std::string& code);
 
     /*
      * travel(n,dir).
@@ -40,26 +41,24 @@ public:
 
     Decoder():model(NULL){
         model = new HuffmanTree;
+        n = model->ROOT;
     }
+
+    std::string* decodeBuffer(const std::string& code);
 
     void display(){
         std::string x = "";
-        x.push_back(0x65);
-        x.push_back(0x10);
-        x.push_back(0x06);
-        x.push_back(0x11);
-        x.push_back(0x19);
+        x.push_back(0x54);
+        x.push_back(0x34);
+        x.push_back(0x4D);
+        x.push_back(0x23);
+        x.push_back(0x92);
 
-        x.push_back(0x12);
-        x.push_back(0x63);
-        x.push_back(0x12);
-        x.push_back(0x65);
-        x.push_back(0x9C);
-
-        x.push_back(0x63);
-        x.push_back(0xF9);
-        x.push_back(0x98);
         x.push_back(0x20);
+        x.push_back(0xF8);
+        x.push_back(0xF3);
+        x.push_back(0x0E);
+        x.push_back(0x40);
 
         std::string input = "e eae de eabe eae dcf";
         std::string* result = decodeBuffer(x);
