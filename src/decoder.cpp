@@ -55,6 +55,10 @@ std::string* Decoder::decodeBuffer(const std::string& code){
                     model->update(out);                          // update model
                     out = 0;                                    // reset out
                 }
+
+                // Note : n is not being set to ROOT here
+                //      : might cause some bug
+
             }else{
                 // travel through tree
                 HuffmanTree::node* t = travel(n, dir);          // target node
@@ -113,7 +117,7 @@ HuffmanTree::node* Decoder::travel(HuffmanTree::node* n,int dir){
 }
 
 
-
+/*
 int main(int args,char** argv){
 
     std::string     output = "/Users/victorchoudhary/Documents/decoded_file.txt";;
@@ -145,3 +149,4 @@ int main(int args,char** argv){
     //decoder.display();
     return 0;
 }
+ */

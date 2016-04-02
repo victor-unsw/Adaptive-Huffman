@@ -11,6 +11,8 @@
 
 #include "model.h"
 
+#define MAX_CHAR 8001
+
 class ahdecode{
 
 private:
@@ -25,10 +27,8 @@ private:
 
 public:
 
-    ahdecode():model(NULL){
-        model = new HuffmanTree;
-    }
-    std::string decodeBuffer(std::string code,bool flag);
+    ahdecode():model(NULL){ }
+    std::string* decodeBuffer(std::string code,bool flag);
 
 };
 

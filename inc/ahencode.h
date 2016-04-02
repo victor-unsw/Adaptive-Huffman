@@ -8,6 +8,8 @@
 #include "string"
 #include "model.h"
 
+#define MAX_CHAR 1001
+
 class ahencode{
 
 private:
@@ -38,7 +40,7 @@ public:
      *
      * Return :
      */
-    std::string encodeBuffer(std::string s, bool flag);
+    std::string* encodeBuffer(std::string s, bool flag);
 
 };
 
