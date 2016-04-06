@@ -167,13 +167,9 @@ int main(int args,char** argv){
         memset(buffer,0,MAX);
         fin.read(buffer,MAX);
         std::string temp(buffer);
-        //std::cout << "encoding : " << temp << "\n----- again ----\n" << std::endl;
         codes = encoder.encodeBuffer(temp);
-        //std::cout << "Encoded version : ";
         std::string s(codes->begin(),codes->end());
         fout.write(s.c_str(),s.size());
-        //std::cout << "writing : " << s << std::endl;
-        //std::cout << "[" << codes->size() << "]" << std::endl;
     }
 
     delete [] buffer;

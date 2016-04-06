@@ -23,7 +23,6 @@ std::string* Decoder::decodeBuffer(const std::string& code){
         // for each character in string ... analyse its bits
 
 
-
         char cc  = *c;                                          // current code
 
         for (int i = 7; i >= 0; ) {
@@ -55,7 +54,7 @@ std::string* Decoder::decodeBuffer(const std::string& code){
                     model->update(out);                          // update model
                     out = 0;                                    // reset out
                 }
-
+                n = model->ROOT;
                 // Note : n is not being set to ROOT here
                 //      : might cause some bug
 
@@ -136,10 +135,8 @@ int main(int args,char** argv){
         memset(buffer,0,MAX);
         fin.read(buffer,MAX);
         std::string temp(buffer);
-        //std::cout << "file : " << temp << std::endl;
         result = decoder.decodeBuffer(temp);
         fout.write(result->c_str(),result->size());
-        //std::cout << "decoded :-\n" << *result;
         delete result;
     }
 
