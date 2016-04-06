@@ -146,7 +146,7 @@ void Encoder::encodeShow() {
 }
 
 
-/*
+
 int main(int args,char** argv){
 
     std::string     output = "/Users/victorchoudhary/Documents/encoded_file.txt";;
@@ -163,7 +163,6 @@ int main(int args,char** argv){
     char* buffer = new char[MAX];
     std::vector<char>* codes = nullptr;
 
-    //while (fin.get(buffer,MAX,'~')){
     while(!fin.eof()){
         memset(buffer,0,MAX);
         fin.read(buffer,MAX);
@@ -181,4 +180,4 @@ int main(int args,char** argv){
 
 
     return 0;
-}*/
+}

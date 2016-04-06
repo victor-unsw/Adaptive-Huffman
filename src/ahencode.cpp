@@ -37,7 +37,7 @@ std::string ahencode::generateCode(char c){
     return code;
 }
 
-/*
+
 int main(int args,char** argv){
 
     char*           buffer  = new char[MAX_CHAR];
@@ -58,4 +58,3 @@ int main(int args,char** argv){
 
     return 0;
 }
- */

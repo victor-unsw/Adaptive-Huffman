@@ -117,7 +117,6 @@ HuffmanTree::node* Decoder::travel(HuffmanTree::node* n,int dir){
 }
 
 
-/*
 int main(int args,char** argv){
 
     std::string     output = "/Users/victorchoudhary/Documents/decoded_file.txt";;
@@ -146,7 +145,5 @@ int main(int args,char** argv){
 
     delete [] buffer;
 
-    //decoder.display();
     return 0;
 }
- */
